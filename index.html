@@ -1,244 +1,1543 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Boba Joy 🧋 | Bubble Tea Artesanal</title>
+<title>BOOBLE — Drink The Unexpected</title>
+<meta name="description" content="BOOBLE is a contemporary Bubble Tea brand. Drink the unexpected.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+  /* ═══════════════════════════════════════════
+     RESET & BASE
+  ═══════════════════════════════════════════ */
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  
   :root {
-    --rosa: #ff7eb9;
-    --roxo: #7afcff;
-    --creme: #fff5e4;
-    --marrom: #6b4423;
-    --rosa-escuro: #ff4f97;
+    --black: #050508;
+    --black-soft: #0a0a10;
+    --white: #f0f0f5;
+    --white-dim: #a0a0b0;
+    --purple: #8b5cf6;
+    --purple-electric: #a855f7;
+    --lilac: #c4b5fd;
+    --orange: #f97316;
+    --pink: #ec4899;
+    --mono: 'JetBrains Mono', monospace;
+    --grotesk: 'Space Grotesk', sans-serif;
   }
-  body { background: var(--creme); color: #333; overflow-x: hidden; }
 
-  /* HEADER */
-  header {
-    position: fixed; top: 0; width: 100%;
-    background: rgba(255, 245, 228, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 1rem 5%;
-    display: flex; justify-content: space-between; align-items: center;
+  html {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--purple) var(--black);
+  }
+
+  body {
+    font-family: var(--grotesk);
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  ::selection {
+    background: var(--purple);
+    color: var(--black);
+  }
+
+  /* ═══════════════════════════════════════════
+     CUSTOM CURSOR
+  ═══════════════════════════════════════════ */
+  .cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border: 1.5px solid var(--purple);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10000;
+    transition: transform 0.15s ease, background 0.3s ease;
+    mix-blend-mode: difference;
+  }
+
+  .cursor-dot {
+    position: fixed;
+    width: 4px;
+    height: 4px;
+    background: var(--purple-electric);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 10001;
+  }
+
+  .cursor.hover {
+    transform: scale(2.5);
+    background: rgba(139, 92, 246, 0.1);
+  }
+
+  /* ═══════════════════════════════════════════
+     PRELOADER
+  ═══════════════════════════════════════════ */
+  .preloader {
+    position: fixed;
+    inset: 0;
+    background: var(--black);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+  }
+
+  .preloader.hidden {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .preloader-text {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--white-dim);
+    margin-bottom: 2rem;
+  }
+
+  .preloader-bar {
+    width: 200px;
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .preloader-bar::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background: var(--purple);
+    animation: loadBar 2s ease forwards;
+  }
+
+  @keyframes loadBar {
+    to { width: 100%; }
+  }
+
+  /* ═══════════════════════════════════════════
+     GRAIN OVERLAY
+  ═══════════════════════════════════════════ */
+  .grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 128px 128px;
+  }
+
+  /* ══════════════════════════════════════════
+     NAVIGATION
+  ═══════════════════════════════════════════ */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     z-index: 1000;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    mix-blend-mode: difference;
   }
-  .logo { font-size: 1.8rem; font-weight: bold; color: var(--rosa-escuro); }
-  nav ul { display: flex; gap: 2rem; list-style: none; }
-  nav a {
-    text-decoration: none; color: var(--marrom);
-    font-weight: 500; transition: 0.3s;
-  }
-  nav a:hover { color: var(--rosa-escuro); }
 
-  /* HERO */
+  .nav-logo {
+    font-family: var(--grotesk);
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.15em;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--white-dim);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+    position: relative;
+  }
+
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: var(--purple);
+    transition: width 0.3s ease;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .nav-status {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--white-dim);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .nav-status .dot {
+    width: 6px;
+    height: 6px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: pulse 2s ease infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ═══════════════════════════════════════════
+     HERO SECTION
+  ═══════════════════════════════════════════ */
   .hero {
     min-height: 100vh;
-    display: flex; align-items: center; justify-content: space-around;
-    padding: 6rem 5% 3rem;
-    background: linear-gradient(135deg, #ffe0ec 0%, #e0f7fa 100%);
-    flex-wrap: wrap;
-  }
-  .hero-text { max-width: 500px; }
-  .hero-text h1 {
-    font-size: 3.5rem; color: var(--marrom);
-    line-height: 1.1; margin-bottom: 1rem;
-  }
-  .hero-text h1 span { color: var(--rosa-escuro); }
-  .hero-text p { font-size: 1.2rem; margin-bottom: 2rem; color: #555; }
-  .btn {
-    background: var(--rosa-escuro); color: white;
-    padding: 1rem 2rem; border: none; border-radius: 50px;
-    font-size: 1rem; cursor: pointer; font-weight: bold;
-    box-shadow: 0 5px 20px rgba(255, 79, 151, 0.4);
-    transition: 0.3s;
-  }
-  .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255, 79, 151, 0.6); }
-
-  .hero-img {
-    font-size: 15rem;
-    animation: float 3s ease-in-out infinite;
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
   }
 
-  /* SEÇÕES */
-  section { padding: 5rem 5%; }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 60% 50% at 50% 50%, rgba(139, 92, 246, 0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(168, 85, 247, 0.05) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 80% 20%, rgba(196, 181, 253, 0.03) 0%, transparent 60%);
+  }
+
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1400px;
+    width: 100%;
+    align-items: center;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .hero-label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    color: var(--white-dim);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hero-label::before {
+    content: '';
+    width: 40px;
+    height: 1px;
+    background: var(--purple);
+  }
+
+  .hero-title {
+    font-size: clamp(4rem, 10vw, 9rem);
+    font-weight: 700;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+  }
+
+  .hero-title .line {
+    display: block;
+    overflow: hidden;
+  }
+
+  .hero-title .line span {
+    display: block;
+    transform: translateY(100%);
+    animation: slideUp 1s ease forwards;
+  }
+
+  .hero-title .line:nth-child(2) span { animation-delay: 0.15s; }
+  .hero-title .line:nth-child(3) span { animation-delay: 0.3s; }
+
+  @keyframes slideUp {
+    to { transform: translateY(0); }
+  }
+
+  .hero-title .accent {
+    color: var(--purple);
+    font-style: italic;
+    font-weight: 300;
+  }
+
+  .hero-sub {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--white-dim);
+    letter-spacing: 0.1em;
+    line-height: 1.8;
+    max-width: 300px;
+  }
+
+  .hero-meta {
+    display: flex;
+    gap: 3rem;
+    margin-top: 1rem;
+  }
+
+  .hero-meta-item {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--white-dim);
+    letter-spacing: 0.1em;
+  }
+
+  .hero-meta-item .val {
+    display: block;
+    color: var(--white);
+    font-size: 0.85rem;
+    margin-top: 0.3rem;
+    font-family: var(--grotesk);
+    font-weight: 500;
+  }
+
+  .hero-right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .hero-cup {
+    position: relative;
+    width: 350px;
+    height: 450px;
+    animation: floatCup 6s ease-in-out infinite;
+  }
+
+  @keyframes floatCup {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(1deg); }
+  }
+
+  .hero-cup-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 60px rgba(139, 92, 246, 0.3));
+  }
+
+  .hero-cup-glow {
+    position: absolute;
+    inset: -20%;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+    animation: glowPulse 4s ease-in-out infinite;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--white-dim);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    animation: fadeInUp 1s ease 2s both;
+  }
+
+  .scroll-indicator .arrow {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--purple), transparent);
+    position: relative;
+  }
+
+  .scroll-indicator .arrow::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: -3px;
+    width: 7px;
+    height: 7px;
+    border-right: 1px solid var(--purple);
+    border-bottom: 1px solid var(--purple);
+    transform: rotate(45deg);
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  /* ═══════════════════════════════════════════
+     SECTION COMMON
+  ═══════════════════════════════════════════ */
+  section {
+    padding: 8rem 3rem;
+    position: relative;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 2rem;
+  }
+
+  .section-number {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--purple);
+    letter-spacing: 0.2em;
+  }
+
   .section-title {
-    text-align: center; font-size: 2.5rem;
-    color: var(--marrom); margin-bottom: 3rem;
-  }
-  .section-title::after {
-    content: ''; display: block; width: 60px; height: 4px;
-    background: var(--rosa-escuro); margin: 1rem auto; border-radius: 2px;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
   }
 
-  /* CARDÁPIO */
-  .menu-grid {
+  .section-subtitle {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--white-dim);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* ═══════════════════════════════════════════
+     FLAVOR SYSTEM
+  ═══════════════════════════════════════════ */
+  .flavors {
+    background: var(--black-soft);
+  }
+
+  .flavor-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    max-width: 1200px; margin: 0 auto;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.03);
   }
-  .card {
-    background: white; border-radius: 20px;
-    padding: 2rem; text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    transition: 0.3s;
-  }
-  .card:hover { transform: translateY(-10px); }
-  .card .emoji { font-size: 5rem; margin-bottom: 1rem; }
-  .card h3 { color: var(--rosa-escuro); margin-bottom: 0.5rem; }
-  .card p { color: #666; margin-bottom: 1rem; font-size: 0.95rem; }
-  .price { font-size: 1.5rem; font-weight: bold; color: var(--marrom); }
 
-  /* SOBRE */
-  .about {
-    background: linear-gradient(135deg, #fff0f6 0%, #f0f8ff 100%);
-    text-align: center;
+  .flavor-card {
+    background: var(--black);
+    padding: 3rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: none;
   }
-  .about-content { max-width: 800px; margin: 0 auto; font-size: 1.1rem; line-height: 1.8; color: #555; }
 
-  /* CONTATO */
-  .contact-grid {
+  .flavor-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(139, 92, 246, 0.08) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .flavor-card:hover::before { opacity: 1; }
+
+  .flavor-card:hover {
+    background: var(--black-soft);
+  }
+
+  .flavor-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 2rem;
+    filter: grayscale(30%) brightness(0.8);
+    transition: all 0.5s ease;
+  }
+
+  .flavor-card:hover .flavor-img {
+    filter: grayscale(0%) brightness(1);
+    transform: scale(1.05);
+  }
+
+  .flavor-number {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--purple);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.5rem;
+  }
+
+  .flavor-name {
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.5rem;
+  }
+
+  .flavor-desc {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--white-dim);
+    line-height: 1.6;
+    letter-spacing: 0.05em;
+  }
+
+  .flavor-tag {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    color: var(--white-dim);
+    letter-spacing: 0.15em;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.4s ease;
+  }
+
+  .flavor-card:hover .flavor-tag {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ═══════════════════════════════════════════
+     CUSTOMIZE SECTION
+  ═══════════════════════════════════════════ */
+  .customize {
+    background: var(--black);
+  }
+
+  .customize-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    max-width: 1000px; margin: 0 auto;
-    text-align: center;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    max-width: 1400px;
+    margin: 0 auto;
   }
-  .contact-item {
-    background: white; padding: 2rem; border-radius: 15px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-  }
-  .contact-item .icon { font-size: 3rem; margin-bottom: 1rem; }
-  .contact-item h4 { color: var(--rosa-escuro); margin-bottom: 0.5rem; }
 
-  /* FOOTER */
+  .customize-options {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .customize-step {
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    padding-bottom: 2rem;
+  }
+
+  .step-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--purple);
+    letter-spacing: 0.3em;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+  }
+
+  .step-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .step-subtitle {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--white-dim);
+    margin-bottom: 1.2rem;
+  }
+
+  .step-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .step-option {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent;
+    color: var(--white-dim);
+    cursor: none;
+    transition: all 0.3s ease;
+    letter-spacing: 0.05em;
+  }
+
+  .step-option:hover {
+    border-color: var(--purple);
+    color: var(--white);
+  }
+
+  .step-option.active {
+    background: var(--purple);
+    border-color: var(--purple);
+    color: var(--black);
+  }
+
+  .customize-preview {
+    position: sticky;
+    top: 120px;
+    height: fit-content;
+  }
+
+  .preview-cup {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+    display: block;
+    filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.2));
+    transition: all 0.5s ease;
+  }
+
+  .preview-info {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  .preview-info h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .preview-info p {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--white-dim);
+    letter-spacing: 0.1em;
+  }
+
+  .btn-create {
+    display: block;
+    margin: 2rem auto 0;
+    padding: 1rem 3rem;
+    background: transparent;
+    border: 1px solid var(--purple);
+    color: var(--white);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    cursor: none;
+    transition: all 0.4s ease;
+    text-transform: uppercase;
+  }
+
+  .btn-create:hover {
+    background: var(--purple);
+    color: var(--black);
+  }
+
+  /* ═══════════════════════════════════════════
+     EXPERIENCE SECTION
+  ══════════════════════════════════════════ */
+  .experience {
+    background: var(--black-soft);
+    text-align: center;
+    padding: 12rem 3rem;
+  }
+
+  .experience-text {
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 3rem;
+  }
+
+  .experience-text .italic {
+    font-style: italic;
+    font-weight: 300;
+    color: var(--purple);
+  }
+
+  .experience-desc {
+    max-width: 600px;
+    margin: 0 auto;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--white-dim);
+    line-height: 1.8;
+    letter-spacing: 0.02em;
+  }
+
+  .experience-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 900px;
+    margin: 5rem auto 0;
+    padding-top: 3rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--purple);
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--white-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  /* ═══════════════════════════════════════════
+     LOCATION SECTION
+  ═══════════════════════════════════════════ */
+  .location {
+    background: var(--black);
+  }
+
+  .location-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+  .location-map {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+    filter: brightness(0.7) contrast(1.2);
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .location-info h3 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+  }
+
+  .location-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .location-detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .location-detail-item .label {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--white-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .location-detail-item .value {
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .btn-directions {
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--white);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    cursor: none;
+    transition: all 0.4s ease;
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .btn-directions:hover {
+    border-color: var(--purple);
+    background: rgba(139, 92, 246, 0.1);
+  }
+
+  .btn-directions .arrow-icon {
+    transition: transform 0.3s ease;
+  }
+
+  .btn-directions:hover .arrow-icon {
+    transform: translateX(5px);
+  }
+
+  /* ══════════════════════════════════════════
+     SOCIAL SECTION
+  ═══════════════════════════════════════════ */
+  .social {
+    background: var(--black-soft);
+  }
+
+  .social-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 250px);
+    gap: 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .social-item {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .social-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+  .social-item:nth-child(4) { grid-column: span 2; }
+
+  .social-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(40%) brightness(0.7);
+    transition: all 0.6s ease;
+  }
+
+  .social-item:hover img {
+    filter: grayscale(0%) brightness(1);
+    transform: scale(1.05);
+  }
+
+  .social-item-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    transform: translateY(100%);
+    transition: transform 0.4s ease;
+  }
+
+  .social-item:hover .social-item-overlay {
+    transform: translateY(0);
+  }
+
+  .social-item-overlay span {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--white-dim);
+    letter-spacing: 0.15em;
+  }
+
+  /* ═══════════════════════════════════════════
+     FOOTER
+  ═══════════════════════════════════════════ */
   footer {
-    background: var(--marrom); color: white;
-    text-align: center; padding: 2rem;
+    background: var(--black);
+    padding: 6rem 3rem 3rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
   }
-  footer p { margin: 0.5rem 0; }
-  .socials { font-size: 1.5rem; margin: 1rem 0; }
-  .socials a { color: white; margin: 0 0.5rem; text-decoration: none; }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .footer-brand h2 {
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .footer-brand p {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--white-dim);
+    letter-spacing: 0.1em;
+  }
+
+  .footer-col h4 {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--white-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .footer-col a {
+    font-size: 0.9rem;
+    color: var(--white);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .footer-col a:hover { color: var(--purple); }
+
+  .footer-bottom {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-bottom p {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--white-dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* ═══════════════════════════════════════════
+     REVEAL ANIMATIONS
+  ═══════════════════════════════════════════ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ═══════════════════════════════════════════
+     RESPONSIVE
+  ═══════════════════════════════════════════ */
+  @media (max-width: 1024px) {
+    .hero-content { grid-template-columns: 1fr; text-align: center; }
+    .hero-left { align-items: center; }
+    .hero-meta { justify-content: center; }
+    .flavor-grid { grid-template-columns: repeat(2, 1fr); }
+    .customize-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .location-grid { grid-template-columns: 1fr; }
+    .social-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; }
+    .social-item:nth-child(1) { grid-column: span 2; }
+    .social-item:nth-child(4) { grid-column: span 1; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .experience-stats { grid-template-columns: repeat(2, 1fr); }
+  }
 
   @media (max-width: 768px) {
-    .hero-text h1 { font-size: 2.5rem; }
-    .hero-img { font-size: 8rem; }
-    nav ul { gap: 1rem; font-size: 0.9rem; }
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    section { padding: 5rem 1.5rem; }
+    .flavor-grid { grid-template-columns: 1fr; }
+    .social-grid { grid-template-columns: 1fr; }
+    .social-item:nth-child(1) { grid-column: span 1; grid-row: span 1; }
+    .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    .hero-cup { width: 250px; height: 320px; }
+    .cursor, .cursor-dot { display: none; }
+    body { cursor: auto; }
+    .step-option, .btn-create, .btn-directions { cursor: pointer; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="logo">🧋 Boba Joy</div>
-  <nav>
-    <ul>
-      <li><a href="#home">Início</a></li>
-      <li><a href="#menu">Cardápio</a></li>
-      <li><a href="#sobre">Sobre</a></li>
-      <li><a href="#contato">Contato</a></li>
-    </ul>
-  </nav>
-</header>
+<!-- Preloader -->
+<div class="preloader" id="preloader">
+  <div class="preloader-text">BOOBLE / SYSTEM INIT</div>
+  <div class="preloader-bar"></div>
+</div>
 
-<section class="hero" id="home">
-  <div class="hero-text">
-    <h1>Sabores que <span>encantam</span> em cada gole</h1>
-    <p>Bubble tea artesanal feito com ingredientes frescos, pérolas de tapioca macias e muito amor. Uma experiência única em cada copo!</p>
-    <button class="btn" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Ver Cardápio 🧋</button>
+<!-- Grain Overlay -->
+<div class="grain"></div>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- Navigation -->
+<nav>
+  <a href="#" class="nav-logo">BOOBLE</a>
+  <ul class="nav-links">
+    <li><a href="#flavors">Flavors</a></li>
+    <li><a href="#customize">Customize</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#location">Store</a></li>
+  </ul>
+  <div class="nav-status">
+    <span class="dot"></span>
+    <span>ONLINE</span>
   </div>
-  <div class="hero-img">🧋</div>
-</section>
+</nav>
 
-<section id="menu">
-  <h2 class="section-title">Nossos Sabores</h2>
-  <div class="menu-grid">
-    <div class="card">
-      <div class="emoji">🍓</div>
-      <h3>Morango Boba</h3>
-      <p>Chá verde com leite, morango fresco e pérolas de tapioca.</p>
-      <div class="price">R$ 16,90</div>
+<!-- Hero Section -->
+<section class="hero" id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-label">BOOBLE / SYSTEM 01</div>
+      <h1 class="hero-title">
+        <span class="line"><span>DRINK</span></span>
+        <span class="line"><span class="accent">THE</span></span>
+        <span class="line"><span>UNEXPECTED.</span></span>
+      </h1>
+      <p class="hero-sub">
+        Bubble tea experience reimagined.<br>
+        Where flavor meets digital art.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span>EST.</span>
+          <span class="val">2026</span>
+        </div>
+        <div class="hero-meta-item">
+          <span>FLAVORS</span>
+          <span class="val">06</span>
+        </div>
+        <div class="hero-meta-item">
+          <span>STATUS</span>
+          <span class="val">LIVE</span>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <div class="emoji">🍫</div>
-      <h3>Chocolate Taro</h3>
-      <p>Mistura cremosa de chocolate belga com taro roxo.</p>
-      <div class="price">R$ 18,90</div>
-    </div>
-    <div class="card">
-      <div class="emoji">🍵</div>
-      <h3>Matcha Clássico</h3>
-      <p>Matcha japonês premium com leite e boba tradicional.</p>
-      <div class="price">R$ 19,90</div>
-    </div>
-    <div class="card">
-      <div class="emoji">🥭</div>
-      <h3>Manga Tropical</h3>
-      <p>Manga natural, chá preto gelado e popping boba.</p>
-      <div class="price">R$ 17,90</div>
-    </div>
-    <div class="card">
-      <div class="emoji">🌸</div>
-      <h3>Rosa Lychee</h3>
-      <p>Chá de rosas com lichia e cristais de coco.</p>
-      <div class="price">R$ 18,50</div>
-    </div>
-    <div class="card">
-      <div class="emoji">🍪</div>
-      <h3>Biscoito & Cream</h3>
-      <p>Creme de biscoito, leite condensado e boba de chocolate.</p>
-      <div class="price">R$ 20,90</div>
+    
+    <div class="hero-right">
+      <div class="hero-cup">
+        <div class="hero-cup-glow"></div>
+        <img src="https://images.unsplash.com/photo-1558857563-c0c4a4b15e0b?w=600&h=800&fit=crop" alt="BOOBLE Bubble Tea" class="hero-cup-img" style="border-radius: 20px;">
+      </div>
     </div>
   </div>
-</section>
 
-<section class="about" id="sobre">
-  <h2 class="section-title">Sobre a Boba Joy</h2>
-  <div class="about-content">
-    <p>Nascemos da paixão por trazer o autêntico bubble tea taiwanês para o Brasil. Cada drink é preparado na hora, com ingredientes selecionados e receitas exclusivas que combinam tradição asiática com sabores brasileiros.</p>
-    <br>
-    <p>🌱 Ingredientes frescos • 🧋 Pérolas de tapioca feitas em casa • ❤️ Feito com amor</p>
-  </div>
-</section>
-
-<section id="contato">
-  <h2 class="section-title">Venha nos visitar</h2>
-  <div class="contact-grid">
-    <div class="contact-item">
-      <div class="icon">📍</div>
-      <h4>Endereço</h4>
-      <p>Rua das Flores, 123<br>Centro - São Paulo/SP</p>
-    </div>
-    <div class="contact-item">
-      <div class="icon">🕐</div>
-      <h4>Horário</h4>
-      <p>Seg a Sex: 10h - 22h<br>Sáb e Dom: 12h - 23h</p>
-    </div>
-    <div class="contact-item">
-      <div class="icon">📱</div>
-      <h4>Contato</h4>
-      <p>(11) 99999-9999<br>oi@bobajoy.com.br</p>
-    </div>
+  <div class="scroll-indicator">
+    <span>SCROLL TO EXPLORE</span>
+    <div class="arrow"></div>
   </div>
 </section>
 
+<!-- Flavor System -->
+<section class="flavors" id="flavors">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-number">01 / FLAVOR SYSTEM</div>
+      <h2 class="section-title">Six<br>Experiences.</h2>
+    </div>
+    <div class="section-subtitle">Each flavor is a universe</div>
+  </div>
+
+  <div class="flavor-grid">
+    <div class="flavor-card reveal">
+      <span class="flavor-tag">SIGNATURE</span>
+      <img src="https://images.unsplash.com/photo-1627993079375-77d2a073d193?w=400&h=300&fit=crop" alt="Taro" class="flavor-img">
+      <div class="flavor-number">01</div>
+      <h3 class="flavor-name">Taro</h3>
+      <p class="flavor-desc">Creamy purple yam infused with jasmine tea. A cosmic blend of earth and sky.</p>
+    </div>
+
+    <div class="flavor-card reveal">
+      <span class="flavor-tag">CLASSIC</span>
+      <img src="https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=400&h=300&fit=crop" alt="Matcha" class="flavor-img">
+      <div class="flavor-number">02</div>
+      <h3 class="flavor-name">Matcha</h3>
+      <p class="flavor-desc">Ceremonial grade matcha from Uji, Japan. Pure green energy in liquid form.</p>
+    </div>
+
+    <div class="flavor-card reveal">
+      <span class="flavor-tag">FRESH</span>
+      <img src="https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=400&h=300&fit=crop" alt="Strawberry" class="flavor-img">
+      <div class="flavor-number">03</div>
+      <h3 class="flavor-name">Strawberry</h3>
+      <p class="flavor-desc">Wild strawberry reduction with popping boba. Sweet, tart, electric.</p>
+    </div>
+
+    <div class="flavor-card reveal">
+      <span class="flavor-tag">RICH</span>
+      <img src="https://images.unsplash.com/photo-1558160074-4d7d8bdf4256?w=400&h=300&fit=crop" alt="Brown Sugar" class="flavor-img">
+      <div class="flavor-number">04</div>
+      <h3 class="flavor-name">Brown Sugar</h3>
+      <p class="flavor-desc">Caramelized brown sugar with fresh milk and tiger stripes. Warm and bold.</p>
+    </div>
+
+    <div class="flavor-card reveal">
+      <span class="flavor-tag">TROPICAL</span>
+      <img src="https://images.unsplash.com/photo-1553279768-865429fa0078?w=400&h=300&fit=crop" alt="Mango" class="flavor-img">
+      <div class="flavor-number">05</div>
+      <h3 class="flavor-name">Mango</h3>
+      <p class="flavor-desc">Alphonso mango puree with coconut milk. Summer in every sip.</p>
+    </div>
+
+    <div class="flavor-card reveal">
+      <span class="flavor-tag">BOLD</span>
+      <img src="https://images.unsplash.com/photo-1546173159-315724a31696?w=400&h=300&fit=crop" alt="Passion Fruit" class="flavor-img">
+      <div class="flavor-number">06</div>
+      <h3 class="flavor-name">Passion Fruit</h3>
+      <p class="flavor-desc">Intense passion fruit with green tea base. Tropical and invigorating.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Customize Section -->
+<section class="customize" id="customize">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-number">02 / CUSTOMIZE</div>
+      <h2 class="section-title">Build Your<br>Booble.</h2>
+    </div>
+    <div class="section-subtitle">Your drink, your rules</div>
+  </div>
+
+  <div class="customize-grid">
+    <div class="customize-options">
+      <div class="customize-step reveal">
+        <div class="step-label">Step 01</div>
+        <h3 class="step-title">Base</h3>
+        <p class="step-subtitle">Choose your tea.</p>
+        <div class="step-options">
+          <button class="step-option active" data-group="base">Black Tea</button>
+          <button class="step-option" data-group="base">Green Tea</button>
+          <button class="step-option" data-group="base">Oolong</button>
+          <button class="step-option" data-group="base">Jasmine</button>
+        </div>
+      </div>
+
+      <div class="customize-step reveal">
+        <div class="step-label">Step 02</div>
+        <h3 class="step-title">Milk</h3>
+        <p class="step-subtitle">Choose your milk.</p>
+        <div class="step-options">
+          <button class="step-option active" data-group="milk">Fresh Milk</button>
+          <button class="step-option" data-group="milk">Oat Milk</button>
+          <button class="step-option" data-group="milk">Coconut</button>
+          <button class="step-option" data-group="milk">Almond</button>
+        </div>
+      </div>
+
+      <div class="customize-step reveal">
+        <div class="step-label">Step 03</div>
+        <h3 class="step-title">Flavor</h3>
+        <p class="step-subtitle">Choose your flavor.</p>
+        <div class="step-options">
+          <button class="step-option active" data-group="flavor">Taro</button>
+          <button class="step-option" data-group="flavor">Matcha</button>
+          <button class="step-option" data-group="flavor">Strawberry</button>
+          <button class="step-option" data-group="flavor">Mango</button>
+          <button class="step-option" data-group="flavor">Brown Sugar</button>
+        </div>
+      </div>
+
+      <div class="customize-step reveal">
+        <div class="step-label">Step 04</div>
+        <h3 class="step-title">Topping</h3>
+        <p class="step-subtitle">Choose your topping.</p>
+        <div class="step-options">
+          <button class="step-option active" data-group="topping">Tapioca Pearls</button>
+          <button class="step-option" data-group="topping">Popping Boba</button>
+          <button class="step-option" data-group="topping">Jelly</button>
+          <button class="step-option" data-group="topping">Pudding</button>
+        </div>
+      </div>
+
+      <div class="customize-step reveal">
+        <div class="step-label">Step 05</div>
+        <h3 class="step-title">Ice</h3>
+        <p class="step-subtitle">Choose your ice level.</p>
+        <div class="step-options">
+          <button class="step-option" data-group="ice">No Ice</button>
+          <button class="step-option active" data-group="ice">Less Ice</button>
+          <button class="step-option" data-group="ice">Normal</button>
+          <button class="step-option" data-group="ice">Extra Ice</button>
+        </div>
+      </div>
+
+      <div class="customize-step reveal">
+        <div class="step-label">Step 06</div>
+        <h3 class="step-title">Sweetness</h3>
+        <p class="step-subtitle">Choose your sweetness.</p>
+        <div class="step-options">
+          <button class="step-option" data-group="sweet">0%</button>
+          <button class="step-option" data-group="sweet">30%</button>
+          <button class="step-option active" data-group="sweet">50%</button>
+          <button class="step-option" data-group="sweet">70%</button>
+          <button class="step-option" data-group="sweet">100%</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="customize-preview reveal">
+      <img src="https://images.unsplash.com/photo-1558857563-c0c4a4b15e0b?w=600&h=800&fit=crop" alt="Your Booble" class="preview-cup" style="border-radius: 20px;">
+      <div class="preview-info">
+        <h3>Your Booble Is Ready.</h3>
+        <p id="preview-desc">Black Tea · Fresh Milk · Taro · Tapioca · Less Ice · 50%</p>
+        <button class="btn-create">Create My Booble</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Experience Section -->
+<section class="experience" id="experience">
+  <div class="reveal">
+    <div class="section-number" style="margin-bottom: 2rem;">03 / THE EXPERIENCE</div>
+    <h2 class="experience-text">
+      NOT JUST<br>A <span class="italic">DRINK.</span>
+    </h2>
+    <p class="experience-desc">
+      Every Booble is crafted to combine flavor, texture, and aesthetics into a single moment. 
+      We don't sell bubble tea — we design experiences that engage all your senses. 
+      From the first sip to the last pearl, every detail is intentional.
+    </p>
+  </div>
+
+  <div class="experience-stats reveal">
+    <div>
+      <div class="stat-number">06</div>
+      <div class="stat-label">Flavors</div>
+    </div>
+    <div>
+      <div class="stat-number">24</div>
+      <div class="stat-label">Combinations</div>
+    </div>
+    <div>
+      <div class="stat-number">100%</div>
+      <div class="stat-label">Fresh Made</div>
+    </div>
+    <div>
+      <div class="stat-number">∞</div>
+      <div class="stat-label">Possibilities</div>
+    </div>
+  </div>
+</section>
+
+<!-- Location Section -->
+<section class="location" id="location">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-number">04 / LOCATION</div>
+      <h2 class="section-title">Find Your<br>Booble.</h2>
+    </div>
+    <div class="section-subtitle">Visit our flagship store</div>
+  </div>
+
+  <div class="location-grid">
+    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?w=800&h=600&fit=crop" alt="BOOBLE Store Map" class="location-map reveal">
+    
+    <div class="location-info reveal">
+      <h3>BOOBLE Flagship</h3>
+      <div class="location-detail">
+        <div class="location-detail-item">
+          <span class="label">Address</span>
+          <span class="value">Rua Augusta, 1580</span>
+        </div>
+        <div class="location-detail-item">
+          <span class="label">City</span>
+          <span class="value">São Paulo, BR</span>
+        </div>
+        <div class="location-detail-item">
+          <span class="label">Hours</span>
+          <span class="value">Mon — Sun</span>
+        </div>
+        <div class="location-detail-item">
+          <span class="label">Open</span>
+          <span class="value">10:00 — 22:00</span>
+        </div>
+        <div class="location-detail-item">
+          <span class="label">Status</span>
+          <span class="value" style="color: #22c55e;">● Open Now</span>
+        </div>
+      </div>
+      <a href="#" class="btn-directions">
+        Get Directions
+        <span class="arrow-icon">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Social Section -->
+<section class="social" id="social">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-number">05 / COMMUNITY</div>
+      <h2 class="section-title">See What's<br>Bubbling.</h2>
+    </div>
+    <div class="section-subtitle">@booble.tea</div>
+  </div>
+
+  <div class="social-grid">
+    <div class="social-item reveal">
+      <img src="https://images.unsplash.com/photo-1558857563-c0c4a4b15e0b?w=800&h=600&fit=crop" alt="BOOBLE Social">
+      <div class="social-item-overlay"><span>001 / FEATURED</span></div>
+    </div>
+    <div class="social-item reveal">
+      <img src="https://images.unsplash.com/photo-1627993079375-77d2a073d193?w=400&h=300&fit=crop" alt="BOOBLE Social">
+      <div class="social-item-overlay"><span>002 / TARO</span></div>
+    </div>
+    <div class="social-item reveal">
+      <img src="https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=400&h=300&fit=crop" alt="BOOBLE Social">
+      <div class="social-item-overlay"><span>003 / MATCHA</span></div>
+    </div>
+    <div class="social-item reveal">
+      <img src="https://images.unsplash.com/photo-1553279768-865429fa0078?w=800&h=300&fit=crop" alt="BOOBLE Social">
+      <div class="social-item-overlay"><span>004 / MANGO</span></div>
+    </div>
+    <div class="social-item reveal">
+      <img src="https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=400&h=300&fit=crop" alt="BOOBLE Social">
+      <div class="social-item-overlay"><span>005 / STRAWBERRY</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
 <footer>
-  <div class="logo" style="color: var(--rosa);">🧋 Boba Joy</div>
-  <div class="socials">
-    <a href="#">📷</a>
-    <a href="#">📘</a>
-    <a href="#">🐦</a>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <h2>BOOBLE</h2>
+      <p>DRINK THE UNEXPECTED.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="#flavors">Menu</a></li>
+        <li><a href="#location">Store</a></li>
+        <li><a href="#experience">About</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">TikTok</a></li>
+        <li><a href="#">Twitter</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="#">hello@booble.tea</a></li>
+        <li><a href="#">+55 11 99999-9999</a></li>
+      </ul>
+    </div>
   </div>
-  <p>© 2026 Boba Joy - Todos os direitos reservados</p>
-  <p>Feito com 🧋 e muito amor</p>
+  <div class="footer-bottom">
+    <p>© 2026 BOOBLE. All rights reserved.</p>
+    <p>Designed with precision.</p>
+  </div>
 </footer>
+
+<script>
+  // ═══════════════════════════════════════════
+  // PRELOADER
+  // ═══════════════════════════════════════════
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('preloader').classList.add('hidden');
+    }, 2200);
+  });
+
+  // ═══════════════════════════════════════════
+  // CUSTOM CURSOR
+  // ══════════════════════════════════════════
+  const cursor = document.getElementById('cursor');
+  const cursorDot = document.getElementById('cursorDot');
+  let mouseX = 0, mouseY = 0;
+  let cursorX = 0, cursorY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    cursorDot.style.left = mouseX - 2 + 'px';
+    cursorDot.style.top = mouseY - 2 + 'px';
+  });
+
+  function animateCursor() {
+    cursorX += (mouseX - cursorX) * 0.15;
+    cursorY += (mouseY - cursorY) * 0.15;
+    cursor.style.left = cursorX - 10 + 'px';
+    cursor.style.top = cursorY - 10 + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  // Hover effect on interactive elements
+  const hoverElements = document.querySelectorAll('a, button, .flavor-card, .social-item, .step-option');
+  hoverElements.forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+  });
+
+  // ═══════════════════════════════════════════
+  // FLAVOR CARD MOUSE TRACKING
+  // ═══════════════════════════════════════════
+  document.querySelectorAll('.flavor-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      card.style.setProperty('--mouse-x', x + '%');
+      card.style.setProperty('--mouse-y', y + '%');
+    });
+  });
+
+  // ═══════════════════════════════════════════
+  // CUSTOMIZE OPTIONS
+  // ══════════════════════════════════════════
+  const selections = {
+    base: 'Black Tea',
+    milk: 'Fresh Milk',
+    flavor: 'Taro',
+    topping: 'Tapioca Pearls',
+    ice: 'Less Ice',
+    sweet: '50%'
+  };
+
+  document.querySelectorAll('.step-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const group = btn.dataset.group;
+      document.querySelectorAll(`.step-option[data-group="${group}"]`).forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selections[group] = btn.textContent;
+      updatePreview();
+    });
+  });
+
+  function updatePreview() {
+    const desc = `${selections.base} · ${selections.milk} · ${selections.flavor} · ${selections.topping} · ${selections.ice} · ${selections.sweet}`;
+    document.getElementById('preview-desc').textContent = desc;
+  }
+
+  // ═══════════════════════════════════════════
+  // SCROLL REVEAL
+  // ═══════════════════════════════════════════
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ═══════════════════════════════════════════
+  // PARALLAX ON HERO CUP
+  // ═══════════════════════════════════════════
+  const heroCup = document.querySelector('.hero-cup');
+  document.addEventListener('mousemove', (e) => {
+    if (window.innerWidth < 768) return;
+    const x = (e.clientX / window.innerWidth - 0.5) * 20;
+    const y = (e.clientY / window.innerHeight - 0.5) * 20;
+    if (heroCup) {
+      heroCup.style.transform = `translate(${x}px, ${y}px)`;
+    }
+  });
+
+  // ═══════════════════════════════════════════
+  // SMOOTH SCROLL FOR NAV LINKS
+  // ═══════════════════════════════════════════
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // ═══════════════════════════════════════════
+  // NAV BACKGROUND ON SCROLL
+  // ═══════════════════════════════════════════
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 100) {
+      nav.style.background = 'rgba(5, 5, 8, 0.9)';
+      nav.style.backdropFilter = 'blur(20px)';
+      nav.style.mixBlendMode = 'normal';
+    } else {
+      nav.style.background = 'transparent';
+      nav.style.backdropFilter = 'none';
+      nav.style.mixBlendMode = 'difference';
+    }
+  });
+</script>
 
 </body>
 </html>
