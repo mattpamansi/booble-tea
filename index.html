@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boba Joy 🧋 | Bubble Tea Artesanal</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+  :root {
+    --rosa: #ff7eb9;
+    --roxo: #7afcff;
+    --creme: #fff5e4;
+    --marrom: #6b4423;
+    --rosa-escuro: #ff4f97;
+  }
+  body { background: var(--creme); color: #333; overflow-x: hidden; }
+
+  /* HEADER */
+  header {
+    position: fixed; top: 0; width: 100%;
+    background: rgba(255, 245, 228, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 5%;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 1000;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+  }
+  .logo { font-size: 1.8rem; font-weight: bold; color: var(--rosa-escuro); }
+  nav ul { display: flex; gap: 2rem; list-style: none; }
+  nav a {
+    text-decoration: none; color: var(--marrom);
+    font-weight: 500; transition: 0.3s;
+  }
+  nav a:hover { color: var(--rosa-escuro); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: space-around;
+    padding: 6rem 5% 3rem;
+    background: linear-gradient(135deg, #ffe0ec 0%, #e0f7fa 100%);
+    flex-wrap: wrap;
+  }
+  .hero-text { max-width: 500px; }
+  .hero-text h1 {
+    font-size: 3.5rem; color: var(--marrom);
+    line-height: 1.1; margin-bottom: 1rem;
+  }
+  .hero-text h1 span { color: var(--rosa-escuro); }
+  .hero-text p { font-size: 1.2rem; margin-bottom: 2rem; color: #555; }
+  .btn {
+    background: var(--rosa-escuro); color: white;
+    padding: 1rem 2rem; border: none; border-radius: 50px;
+    font-size: 1rem; cursor: pointer; font-weight: bold;
+    box-shadow: 0 5px 20px rgba(255, 79, 151, 0.4);
+    transition: 0.3s;
+  }
+  .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(255, 79, 151, 0.6); }
+
+  .hero-img {
+    font-size: 15rem;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  /* SEÇÕES */
+  section { padding: 5rem 5%; }
+  .section-title {
+    text-align: center; font-size: 2.5rem;
+    color: var(--marrom); margin-bottom: 3rem;
+  }
+  .section-title::after {
+    content: ''; display: block; width: 60px; height: 4px;
+    background: var(--rosa-escuro); margin: 1rem auto; border-radius: 2px;
+  }
+
+  /* CARDÁPIO */
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .card {
+    background: white; border-radius: 20px;
+    padding: 2rem; text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    transition: 0.3s;
+  }
+  .card:hover { transform: translateY(-10px); }
+  .card .emoji { font-size: 5rem; margin-bottom: 1rem; }
+  .card h3 { color: var(--rosa-escuro); margin-bottom: 0.5rem; }
+  .card p { color: #666; margin-bottom: 1rem; font-size: 0.95rem; }
+  .price { font-size: 1.5rem; font-weight: bold; color: var(--marrom); }
+
+  /* SOBRE */
+  .about {
+    background: linear-gradient(135deg, #fff0f6 0%, #f0f8ff 100%);
+    text-align: center;
+  }
+  .about-content { max-width: 800px; margin: 0 auto; font-size: 1.1rem; line-height: 1.8; color: #555; }
+
+  /* CONTATO */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    max-width: 1000px; margin: 0 auto;
+    text-align: center;
+  }
+  .contact-item {
+    background: white; padding: 2rem; border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+  }
+  .contact-item .icon { font-size: 3rem; margin-bottom: 1rem; }
+  .contact-item h4 { color: var(--rosa-escuro); margin-bottom: 0.5rem; }
+
+  /* FOOTER */
+  footer {
+    background: var(--marrom); color: white;
+    text-align: center; padding: 2rem;
+  }
+  footer p { margin: 0.5rem 0; }
+  .socials { font-size: 1.5rem; margin: 1rem 0; }
+  .socials a { color: white; margin: 0 0.5rem; text-decoration: none; }
+
+  @media (max-width: 768px) {
+    .hero-text h1 { font-size: 2.5rem; }
+    .hero-img { font-size: 8rem; }
+    nav ul { gap: 1rem; font-size: 0.9rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🧋 Boba Joy</div>
+  <nav>
+    <ul>
+      <li><a href="#home">Início</a></li>
+      <li><a href="#menu">Cardápio</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-text">
+    <h1>Sabores que <span>encantam</span> em cada gole</h1>
+    <p>Bubble tea artesanal feito com ingredientes frescos, pérolas de tapioca macias e muito amor. Uma experiência única em cada copo!</p>
+    <button class="btn" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">Ver Cardápio 🧋</button>
+  </div>
+  <div class="hero-img">🧋</div>
+</section>
+
+<section id="menu">
+  <h2 class="section-title">Nossos Sabores</h2>
+  <div class="menu-grid">
+    <div class="card">
+      <div class="emoji">🍓</div>
+      <h3>Morango Boba</h3>
+      <p>Chá verde com leite, morango fresco e pérolas de tapioca.</p>
+      <div class="price">R$ 16,90</div>
+    </div>
+    <div class="card">
+      <div class="emoji">🍫</div>
+      <h3>Chocolate Taro</h3>
+      <p>Mistura cremosa de chocolate belga com taro roxo.</p>
+      <div class="price">R$ 18,90</div>
+    </div>
+    <div class="card">
+      <div class="emoji">🍵</div>
+      <h3>Matcha Clássico</h3>
+      <p>Matcha japonês premium com leite e boba tradicional.</p>
+      <div class="price">R$ 19,90</div>
+    </div>
+    <div class="card">
+      <div class="emoji">🥭</div>
+      <h3>Manga Tropical</h3>
+      <p>Manga natural, chá preto gelado e popping boba.</p>
+      <div class="price">R$ 17,90</div>
+    </div>
+    <div class="card">
+      <div class="emoji">🌸</div>
+      <h3>Rosa Lychee</h3>
+      <p>Chá de rosas com lichia e cristais de coco.</p>
+      <div class="price">R$ 18,50</div>
+    </div>
+    <div class="card">
+      <div class="emoji">🍪</div>
+      <h3>Biscoito & Cream</h3>
+      <p>Creme de biscoito, leite condensado e boba de chocolate.</p>
+      <div class="price">R$ 20,90</div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="sobre">
+  <h2 class="section-title">Sobre a Boba Joy</h2>
+  <div class="about-content">
+    <p>Nascemos da paixão por trazer o autêntico bubble tea taiwanês para o Brasil. Cada drink é preparado na hora, com ingredientes selecionados e receitas exclusivas que combinam tradição asiática com sabores brasileiros.</p>
+    <br>
+    <p>🌱 Ingredientes frescos • 🧋 Pérolas de tapioca feitas em casa • ❤️ Feito com amor</p>
+  </div>
+</section>
+
+<section id="contato">
+  <h2 class="section-title">Venha nos visitar</h2>
+  <div class="contact-grid">
+    <div class="contact-item">
+      <div class="icon">📍</div>
+      <h4>Endereço</h4>
+      <p>Rua das Flores, 123<br>Centro - São Paulo/SP</p>
+    </div>
+    <div class="contact-item">
+      <div class="icon">🕐</div>
+      <h4>Horário</h4>
+      <p>Seg a Sex: 10h - 22h<br>Sáb e Dom: 12h - 23h</p>
+    </div>
+    <div class="contact-item">
+      <div class="icon">📱</div>
+      <h4>Contato</h4>
+      <p>(11) 99999-9999<br>oi@bobajoy.com.br</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="logo" style="color: var(--rosa);">🧋 Boba Joy</div>
+  <div class="socials">
+    <a href="#">📷</a>
+    <a href="#">📘</a>
+    <a href="#">🐦</a>
+  </div>
+  <p>© 2026 Boba Joy - Todos os direitos reservados</p>
+  <p>Feito com 🧋 e muito amor</p>
+</footer>
+
+</body>
+</html>
